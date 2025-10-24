@@ -33,7 +33,7 @@ from .peripherals.user_peripherals import (
     I2S,
 )
 from .linker_section import LinkerSection
-from .system import BusType, XHeep
+from .xheep import BusType, XHeep
 
 
 def to_int(input) -> Union[int, None]:
