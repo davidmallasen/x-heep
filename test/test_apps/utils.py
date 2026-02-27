@@ -2,6 +2,8 @@
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 
+import os
+
 from simulator import SimResult
 from application import Application
 from bcolors import BColors
@@ -14,6 +16,32 @@ def in_list(name, item_list):
     will return True.
     """
     return any(word in name for word in item_list)
+
+
+def get_apps(apps_dir: str, whitelist: list, blacklist: list):
+    """
+    Get all apps from apps_dir. If the whitelist contains any elements,
+    it only obtains those apps. Skips the blacklist apps.
+
+    :param str apps_dir: The directory where the apps are located.
+    :param list whitelist: The list of apps to test. If empty, all apps are tested.
+    :param list blacklist: The list of apps to skip. Has lower priority than the whitelist.
+
+    :return: A list of Application objects corresponding to the apps to test.
+    """
+    if not whitelist:
+        app_list = [Application(app) for app in os.listdir(apps_dir)]
+    else:
+        app_list = [
+            Application(app) for app in os.listdir(apps_dir) if in_list(app, whitelist)
+        ]
+
+    print(BColors.OKCYAN + "Apps to test from " + apps_dir + ":" + BColors.ENDC)
+    for app in app_list:
+        if not in_list(app.name, blacklist):
+            print(BColors.OKCYAN + f"    - {app.name}" + BColors.ENDC)
+
+    return app_list
 
 
 def filter_results(app_list: list, blacklist: list):

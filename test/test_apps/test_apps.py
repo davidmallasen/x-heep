@@ -12,10 +12,10 @@ FUTURE WORK:
 import argparse
 import os
 
-from application import Application
 from utils import (
     BColors,
     in_list,
+    get_apps,
     filter_results,
     print_results,
     print_table_header,
@@ -64,28 +64,6 @@ CLANG_BLACKLIST = []
 
 # Blacklist of apps to skip with verilator
 VERILATOR_BLACKLIST = []
-
-
-def get_apps(apps_dir):
-    """
-    Get all apps from apps_dir. If the WHITELIST contains any elements,
-    it only obtains those apps. Skips the BLACKLIST apps.
-
-    Returns the list of apps.
-    """
-    if not WHITELIST:
-        app_list = [Application(app) for app in os.listdir(apps_dir)]
-    else:
-        app_list = [
-            Application(app) for app in os.listdir(apps_dir) if in_list(app, WHITELIST)
-        ]
-
-    print(BColors.OKCYAN + "Apps to test from " + apps_dir + ":" + BColors.ENDC)
-    for app in app_list:
-        if not in_list(app.name, BLACKLIST):
-            print(BColors.OKCYAN + f"    - {app.name}" + BColors.ENDC)
-
-    return app_list
 
 
 def main():
@@ -164,7 +142,7 @@ def main():
             exit(1)
 
     # Get a list with all the applications we want to test
-    app_list = get_apps("sw/applications")
+    app_list = get_apps("sw/applications", WHITELIST, BLACKLIST)
 
     simulators = []
     for simulator_name in SIMULATORS:
