@@ -12,8 +12,9 @@ FUTURE WORK:
 import argparse
 import os
 
+from simulator import Simulator, SimResult
+from bcolors import BColors
 from utils import (
-    BColors,
     in_list,
     get_apps,
     filter_results,
@@ -22,7 +23,6 @@ from utils import (
     print_table_row,
     print_table_summary,
 )
-from simulator import Simulator, SimResult
 
 # Default available compilers
 COMPILERS = ["gcc", "clang"]
