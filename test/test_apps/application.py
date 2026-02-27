@@ -5,8 +5,8 @@
 import os
 import subprocess
 
-from .simulator import SIMULATORS, SimResult
-from .utils import BColors
+from simulator import SimResult
+from bcolors import BColors
 
 
 class Application:

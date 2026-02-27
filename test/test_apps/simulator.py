@@ -4,7 +4,8 @@
 
 import subprocess
 import re
-from .utils import BColors
+
+from bcolors import BColors
 
 
 class SimResult:

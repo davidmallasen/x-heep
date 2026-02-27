@@ -2,24 +2,9 @@
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 
-from .simulator import SimResult
-from .application import Application
-
-
-class BColors:
-    """
-    Colors in the terminal output.
-    """
-
-    HEADER = "\033[95m"
-    OKBLUE = "\033[94m"
-    OKCYAN = "\033[96m"
-    OKGREEN = "\033[92m"
-    WARNING = "\033[93m"
-    FAIL = "\033[91m"
-    ENDC = "\033[0m"
-    BOLD = "\033[1m"
-    UNDERLINE = "\033[4m"
+from simulator import SimResult
+from application import Application
+from bcolors import BColors
 
 
 def in_list(name, item_list):
@@ -310,7 +295,5 @@ def print_table_summary(
         )
     if len(simulation_timed_out_apps) > 0:
         print(
-            BColors.FAIL
-            + f"Timed out: {len(simulation_timed_out_apps)}"
-            + BColors.ENDC
+            BColors.FAIL + f"Timed out: {len(simulation_timed_out_apps)}" + BColors.ENDC
         )

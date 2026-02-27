@@ -12,8 +12,8 @@ FUTURE WORK:
 import argparse
 import os
 
-from .application import Application
-from .utils import (
+from application import Application
+from utils import (
     BColors,
     in_list,
     filter_results,
@@ -22,7 +22,7 @@ from .utils import (
     print_table_row,
     print_table_summary,
 )
-from .simulator import Simulator, SimResult
+from simulator import Simulator, SimResult
 
 # Default available compilers
 COMPILERS = ["gcc", "clang"]
@@ -268,7 +268,7 @@ def main():
         compilation_failed_apps,
         simulation_failed_apps,
         simulation_timed_out_apps,
-    ) = filter_results(app_list)
+    ) = filter_results(app_list, BLACKLIST)
 
     if not args.table:
         print_results(
