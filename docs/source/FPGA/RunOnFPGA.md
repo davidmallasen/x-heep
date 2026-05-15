@@ -55,9 +55,59 @@ and choose the file `openhwgroup.org_systems_core-v-mini-mcu_<version>.bit` in t
 
 Or simply type:
 
-```
+```sh
 make vivado-fpga-pgm FPGA_BOARD=<BOARD_NAME>
 ```
+
+### Build and program the FPGA using the Processing System
+
+The Processing System (PS) enables remote access to the SoC over SSH. With the PYNQ utilities, you can connect to the board and program the FPGA by loading the bitstream from Python.
+
+Setting the `PS_ENABLE` argument instantiates the PS in the design for the supported boards:
+
+```sh
+make vivado-fpga FPGA_BOARD=pynq-z2 FUSESOC_ARGS="--PS_ENABLE"
+```
+
+**Upload the bitstream to the remote board**
+
+To program the bitstream upload both the `.bit` and the `.hwh` file to the board,
+
+```sh
+scp ./build/<project_name>_<version>/<board_target>-vivado/<project_name>.runs/impl_1/<project_name>_wrapper.bit board@remote-host:/path/to/bitstream/
+scp ./build/<project_name>_<version>/<board_target>-vivado/<project_name>.gen/sources_1/bd/<project_name>/hw_handoff/xilinx_ps_wizzard.hwh board@remote-host:/path/to/bitstream/<project_name>_wrapper.hwh
+```
+
+Or simply type:
+
+```sh
+make vivado-fpga-remote-pgm FPGA_BOARD=<BOARD_NAME> REMOTE=board@remote-host REMOTE_DIR=/path/to/bitstream
+```
+
+```{warning}
+Important: The `*.bit` and `*.hwh` files must:
+   1. Have the same base name (`ex.bit` & `ex.hwh`).
+   2. Be in the same directory.
+This ensure the bitstream to be loaded correctly through the PYNQ drivers.
+```
+
+**Program the FPGA on the remote board**
+
+SSH into the board, activate the PYNQ environment, and load the overlay:
+
+```
+$ ssh board@remote-host
+
+$ sudo -i
+# source /etc/profile.d/pynq-venv.sh
+
+# python
+>>> from pynq import Overlay
+>>> ol = Overlay("/path/to/bitstream.bit")
+```
+
+Additionally, you can find utilities to program the bitstream on the FPGA and run programs from the Processing System in the following repository: [xheep-Xilinx-SoCs-interface](https://github.com/x-heep/xheep-Xilinx-SoCs-interface).
+
 
 ## Running firmware on the FPGA
 
